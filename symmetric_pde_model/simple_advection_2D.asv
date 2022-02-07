@@ -29,31 +29,33 @@ rho(x==1,y==1,1) = 1;
 %
 % rho(1<=x & x<=2,1<=y & y<=2,1) = round(rand(sum(1<=x & x<=2),sum(1<=y & y<=2)));
 
-%% Lax-Wendroff Method
+%% Boundary conditions
+% should set these after solving at each point in time, since I need to do
+% that anyway as the values may get overwritten
+
+rho(x==0,y==0,:) = 0;
+
 % free node indices
-% i = 2:nx-1;
-% j = 2:ny-1;
-% for dt=1:nt
-%     
-%     rho(i,j,dt+1) = rho(i,j,dt) - ...
-%                     (a(1)*k/(2*h))*(rho(i+1,j,dt)-rho(i-1,j,dt)) - ...
-%                     (a(2)*k/(2*h))*(rho(i,j+1,dt)-rho(i,j-1,dt)) + ...
-%                     (a(1)*a(1)*k*k/(h*h*2))*(rho(i+1,j,dt)-2*rho(i,j,dt)+rho(i-1,j,dt)) + ...
-%                     (a(2)*a(2)*k*k/(h*h*2))*(rho(i,j+1,dt)-2*rho(i,j,dt)+rho(i,j-1,dt));
-%     
-% end
+i = 2:nx-1;
+j = 2:ny-1;
+
+%% Lax-Wendroff Method
+
+for dt=1:nt
+    
+    rho(i,j,dt+1) = rho(i,j,dt) - ...
+                    (a(1)*k/(2*h))*(rho(i+1,j,dt)-rho(i-1,j,dt)) - ...
+                    (a(2)*k/(2*h))*(rho(i,j+1,dt)-rho(i,j-1,dt)) + ...
+                    (a(1)*a(1)*k*k/(h*h*2))*(rho(i+1,j,dt)-2*rho(i,j,dt)+rho(i-1,j,dt)) + ...
+                    (a(2)*a(2)*k*k/(h*h*2))*(rho(i,j+1,dt)-2*rho(i,j,dt)+rho(i,j-1,dt));
+    
+end
 
 % Beam-Warming method
 % 
-i = 3:nx-1; % shifted forward to allow the boundary conditions to be set properly
-j = 3:ny-1;
-for dt=1:nt
-    rho(i,j,dt+1) = rho(i,j,dt) - ...
-                    (a(1)*k/(2*h))*(3*rho(i,j,dt)-4*rho(i-1,j,dt)+rho(i-2,j,dt)) - ...
-                    (a(1)*k/(2*h))*(3*rho(i,j,dt)-4*rho(i,j-1,dt)+rho(i,j-2,dt)) + ...
-                    (a(1)*a(1)*k*k/(h*h*2))*(rho(i,j,dt)-2*rho(i-1,j,dt)+rho(i-2,j,dt)) + ...
-                    (a(1)*a(1)*k*k/(h*h*2))*(rho(i,j,dt)-2*rho(i,j-1,dt)+rho(i,j-2,dt));
-end
+% for dt=1:nt
+%     rho(i,j,dt+1) = rho(i,j,dt
+% end
 
 
 %% Plotting

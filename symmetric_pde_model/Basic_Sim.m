@@ -3,11 +3,12 @@ function [particles,counts] = Basic_Sim(dt, T, c, xbar, ybar)
 % dt is the time step
 % T is the total simulation time
 % c is the rate of accumulation of y, dy/dt
+% xbar, ybar are the thresholds in X and Y
 
 % Generate a random initial condition
 % each particle is a row like [x y] where each are in (1,2)
 n = round(100*rand());
-particles = 4*rand(n,2);
+particles = 2*rand(n,2)+1;
 counts = [n];
 
 % Prepare figure containing pop. distributions
