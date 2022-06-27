@@ -17,8 +17,8 @@ rho = zeros(nx,nt); % density function
 %% Initial Conditions
 
 xtmp = x(1<= x & x < 2);
-rho(1 <= x & x < 2,1) = pow2(-xtmp/a);
-rho(1 <= x & x < 2,1) = rho(1 <= x & x < 2,1)/(h*sum(rho(1 <= x & x < 2,1)));
+rho(1 <= x & x < 2,1) = 1;
+% rho(1 <= x & x < 2,1) = rho(1 <= x & x < 2,1)/(sum(rho(1 <= x & x < 2,1)));
 
 %% Lax-Friedrichs
 
@@ -82,7 +82,7 @@ for dt = 1:nt
     hold on;
     plot(x12,pow2(a*(dt*T/nt)).*(log(16))*pow2(-x12),'Color','Red'); % Analytic
     hold off;
-    axis([x_bounds(1) x_bounds(2) rho_min 1.1*rho_max]);
+    axis([x_bounds(1) x_bounds(2) rho_min 6]);
     legend('Empirical','Analytic');
     drawnow;
     M(dt) = getframe;
